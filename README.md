@@ -1,6 +1,6 @@
 # Instagram User Analytics
 
-I analyzed 500 Instagram posts to figure out what actually drives engagement and follower growth. Things like — does posting time matter? Do more hashtags mean more reach? Which type of post performs best?
+I analyzed 500 Instagram posts to figure out what actually drives engagement and follower growth. Things like does posting time matter? Do more hashtags mean more reach? Which type of post performs best?
 
 Used Python for the analysis and SQL (SQLite) to query the data.
 
