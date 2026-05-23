@@ -118,19 +118,7 @@ ORDER BY Avg_Engagement DESC;
 
 ---
 
-## Charts
 
-### Engagement by Post Type
-![Post Type](outputs/chart_01_engagement_by_post_type.png)
-
-### Engagement by Posting Hour
-![Posting Hour](outputs/chart_02_posting_hour_engagement.png)
-
-### Likes vs New Followers
-![Scatter](outputs/chart_03_likes_vs_followers.png)
-
-### Correlation Heatmap
-![Heatmap](outputs/chart_04_correlation_heatmap.png)
 
 ---
 
