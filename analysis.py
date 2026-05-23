@@ -1,17 +1,3 @@
-"""
-Instagram User Analytics — Analysis Script
-==========================================
-Analyzes Instagram engagement data using Python and SQL (SQLite).
-Identifies key drivers of follower growth and post interaction rates.
-
-Usage:
-    python scripts/analysis.py
-
-Output:
-    - KPI summary printed to console
-    - SQL query results printed to console
-    - 4 chart images saved to outputs/
-"""
 
 import pandas as pd
 import numpy as np
@@ -22,7 +8,6 @@ import os
 import warnings
 warnings.filterwarnings('ignore')
 
-# ── Config ────────────────────────────────────────────────────────────────────
 DATA_PATH  = os.path.join(os.path.dirname(__file__), '..', 'data', 'instagram_raw_data.csv')
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), '..', 'outputs')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -30,7 +15,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 sns.set_theme(style='whitegrid', palette='muted')
 plt.rcParams['figure.dpi'] = 130
 
-# ── 1. Load & Validate ────────────────────────────────────────────────────────
+# ── 1. VALIDATING ────────────────────────────────────────────────────────
 print("=" * 55)
 print("  INSTAGRAM USER ANALYTICS")
 print("=" * 55)
@@ -42,12 +27,12 @@ print(f"   Duplicates: {df.duplicated().sum()} duplicate rows")
 print(f"\nColumn Types:\n{df.dtypes}")
 print(f"\nBasic Stats:\n{df[['Likes','Comments','Shares','Saves','Engagement_Rate','New_Followers']].describe().round(2)}")
 
-# ── 2. Load into SQLite ───────────────────────────────────────────────────────
+# ── SQLite ───────────────────────────────────────────────────────
 print("\n── SQL ANALYSIS (via SQLite) ────────────────────────")
 conn = sqlite3.connect(':memory:')
 df.to_sql('instagram_posts', conn, index=False, if_exists='replace')
 
-# SQL Query 1 — Avg engagement by post type
+# Avg engagement by post type
 q1 = pd.read_sql_query("""
     SELECT
         Post_Type,
@@ -65,7 +50,7 @@ q1 = pd.read_sql_query("""
 print("\nQ1 — Average Engagement by Post Type:")
 print(q1.to_string(index=False))
 
-# SQL Query 2 — Best posting hours
+# Best posting hours
 q2 = pd.read_sql_query("""
     SELECT
         Posting_Hour,
@@ -80,7 +65,7 @@ q2 = pd.read_sql_query("""
 print("\nQ2 — Top 8 Posting Hours by Engagement:")
 print(q2.to_string(index=False))
 
-# SQL Query 3 — Hashtag buckets
+#  Hashtag buckets
 q3 = pd.read_sql_query("""
     SELECT
         CASE
@@ -99,7 +84,7 @@ q3 = pd.read_sql_query("""
 print("\nQ3 — Engagement by Hashtag Count Bucket:")
 print(q3.to_string(index=False))
 
-# SQL Query 4 — Best day of week
+# Best day of week
 q4 = pd.read_sql_query("""
     SELECT
         Day_of_Week,
@@ -113,7 +98,7 @@ q4 = pd.read_sql_query("""
 print("\nQ4 — Engagement by Day of Week:")
 print(q4.to_string(index=False))
 
-# SQL Query 5 — High performers (top 10% engagement)
+# top 10% engagement
 q5 = pd.read_sql_query("""
     SELECT Post_Type, Hashtag_Count, Posting_Hour,
            Likes, Engagement_Rate, New_Followers
@@ -132,7 +117,7 @@ print(q5.to_string(index=False))
 
 conn.close()
 
-# ── 3. KPI Summary ────────────────────────────────────────────────────────────
+# KPI Summary 
 print("\n── KPI SUMMARY ──────────────────────────────────────")
 print(f"  Total Posts Analyzed  : {len(df)}")
 print(f"  Avg Engagement Rate   : {df['Engagement_Rate'].mean():.2f}%")
@@ -142,7 +127,7 @@ print(f"  Best Post Type        : {df.groupby('Post_Type')['Engagement_Rate'].me
 print(f"  Best Hashtag Range    : 6–15 hashtags")
 print(f"  Best Posting Hour     : {df.groupby('Posting_Hour')['Engagement_Rate'].mean().idxmax()}:00")
 
-# ── 4. Charts ─────────────────────────────────────────────────────────────────
+# ── 4. Charts ──
 print("\n── GENERATING CHARTS ────────────────────────────────")
 
 # Chart 1 — Engagement Rate by Post Type
